@@ -1,5 +1,5 @@
 {
-  "name": "myApp",
+  "name": "radio_talky",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -31,8 +31,6 @@
     "@ionic-native/streaming-media": "^5.27.0",
     "@ionic/angular": "^5.0.0",
     "animejs": "^3.2.0",
-    "cordova-android": "8.1.0",
-    "cordova-music-controls": "git+https://github.com/Ekaanth/cordova-music-controls-plugin.git",
     "cordova-plugin-advanced-http": "3.0.1",
     "cordova-plugin-file": "^6.0.2",
     "cordova-plugin-fullscreen": "1.2.0",
@@ -89,8 +87,7 @@
       "cordova-plugin-network-information": {},
       "cordova-plugin-advanced-http": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-screen-orientation": {},
-      "cordova-music-controls": {}
+      "cordova-plugin-screen-orientation": {}
     },
     "platforms": [
       "android"

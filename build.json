@@ -1,0 +1,11 @@
+{
+    "android": {
+        "release": {
+            "keystore": "radio-talky.keystore",
+            "storePassword": "radiotalky123",
+            "alias": "alias_name",
+            "password" : "radiotalky123",
+            "keystoreType": "JKS"
+        }
+    }
+}
