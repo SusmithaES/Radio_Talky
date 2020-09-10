@@ -1,8 +1,8 @@
-import { Component, ViewChild, ElementRef} from '@angular/core';
+import { Component, ViewChild} from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { $ } from 'protractor';
+import { Media, MediaObject } from '@ionic-native/media/ngx';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +33,7 @@ export class HomePage {
   recentLoading: boolean = true;
   showTimeout: any = null;
   showDuration: any = 0;
+  live: MediaObject = this.media.create(this.radioUrl);
 
   @ViewChild('radioPlayer') radio: any;
   @ViewChild('showPlayer') show: any;
@@ -43,7 +44,7 @@ export class HomePage {
   show_playImg: any = '../../assets/Playmark_white2.png';
   show_pauseImg: any = '../../assets/pausemark_white2.png';
 
-  constructor(private network: Network, private http: HTTP) 
+  constructor(private network: Network, private http: HTTP, private media: Media) 
   { 
     this.network.onConnect().subscribe(() => {
       this.upcomingShows();
@@ -53,7 +54,8 @@ export class HomePage {
     this.network.onDisconnect().subscribe(() => {
       if (this.isRadioPlaying ==true) {
         this.isRadioPlaying = false;
-        this.radio.nativeElement.pause();
+        //this.radio.nativeElement.pause();
+        this.live.stop();
         this.btnImage = '../../assets/play.png';
         this.stopAnimation();
       }
@@ -182,16 +184,16 @@ export class HomePage {
     if (this.isRadioPlaying ==true) {
       this.title = "Listen Now";
       this.isRadioPlaying = false;
-      this.radio.nativeElement.pause();
+      //this.radio.nativeElement.pause();
+      this.live.stop();
       this.btnImage = '../../assets/play.png';
-      this.stopAnimation();
-     
+      this.stopAnimation();    
     } else {
       this.isRadioPlaying = true;
-      this.radio.nativeElement.play();
+      //this.radio.nativeElement.play();
+      this.live.play();
       this.btnImage = '../../assets/pause.png';
       this.playAnimation();
-     
     }
   }
 
@@ -206,7 +208,8 @@ export class HomePage {
 
     if (this.isRadioPlaying == true) {
       this.isRadioPlaying = false;
-      this.radio.nativeElement.pause();
+      //this.radio.nativeElement.pause();
+      this.live.stop();
       this.btnImage = '../../assets/play.png';
     }
 
@@ -245,37 +248,4 @@ export class HomePage {
   {
     navigator['app'].exitApp();
   }
-  
-  musicCntrl()
-  {
-    // this.MusicControls.create(
-    //   {
-    //     track: this.title,
-    //     dismissable: true,
-    //     playIcon: ' ',
-    //     pauseIcon: ' ',
-    //     closeIcon: ' ',
-    //     notificationIcon:' '
-    //   }
-    // )
-  }
-
-  music()
-  {
-    // this.musicControl.subscribe().subscribe(action =>
-    //   {
-    //     const message = JSON.parse(action).message;
-    //     switch(message)
-    //     {
-    //     case 'music-controls-pause':
-    //         this.playRadio();
-    //         break;
-    //     case 'music-controls-play':
-    //         this.playRadio();
-    //         break;
-      
-    //     }
-    //   }) 
-  }
-
 }

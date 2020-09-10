@@ -8,11 +8,9 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
-import { Media, MediaObject } from '@ionic-native/media/ngx';
+import { Media } from '@ionic-native/media/ngx';
 import { AndroidFullScreen } from '@ionic-native/android-full-screen/ngx';
 import { Network } from '@ionic-native/network/ngx';
-//import { HttpClientModule } from '@angular/common/http';
 import { RemoteServiceService } from './remote-service.service'
 import { HTTP } from '@ionic-native/http/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
@@ -24,7 +22,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
   providers: [
     StatusBar,
     SplashScreen,
-    StreamingMedia,
     Media,
     AndroidFullScreen,
     Network,
