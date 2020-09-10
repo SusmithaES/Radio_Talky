@@ -1,0 +1,74 @@
+.user_Name {
+  color: lighten($color:  #000000, $amount: 10);
+  font-size: small;
+  font-weight: bold;
+  margin: 14% auto auto;
+}
+
+.playButton {
+  width: 20%;
+  margin: auto;
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  right: 0;
+}
+
+.list {
+  margin: 12% 0 5%;
+  color: lighten($color:  #000000, $amount: 10);
+}
+
+.background {
+  --background: url(../../assets/bg_updated.png) 0 0/100% 100% no-repeat;
+}
+
+.heading
+{
+  font-size: x-large;
+  font-weight: bold;
+  margin-left: 5%;
+  padding-bottom: 2%;
+}
+
+.square {
+  width: 100%;
+  height: 5%;
+  margin-top: 6%;
+}
+
+.square1 {
+  margin-top: 2%;
+}
+
+.cardContent {
+  white-space: nowrap;
+  padding: 5%;
+  font-size: 12px;
+}
+
+.card_properties {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background-color: #ffffff;
+}
+
+.listenlive
+{
+  margin: auto;
+  position: absolute;
+  bottom: 2%;
+  left: 0;
+  right: 0;
+  max-width: fit-content;
+  color: #000000;
+  white-space: nowrap;
+  font-size: small;;
+}
+
+@media only screen and (max-width: 599px) {
+  .user_Name {
+    margin: 8% auto auto;
+  }
+}

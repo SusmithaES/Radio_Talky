@@ -1,0 +1,26 @@
+.line
+{
+  height: 1px;
+  background-color: #D23717;
+}
+
+ion-menu{
+  ion-content{
+    --ion-background-color:#ffffff;
+    color: #000000;
+  }
+
+  .underline
+  {
+    margin-top: 15px;
+    color: #000000;
+    margin-left: 5%;
+    margin-bottom: 3%;
+  }
+  .contactUs
+  {
+    color: #000000;
+    margin-left: 5%;
+  }
+
+}

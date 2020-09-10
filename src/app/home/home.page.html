@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="#00000">
+    <ion-buttons style="color: #e54925" slot="start">
+      <ion-menu-button color="#ff4500"></ion-menu-button>
+    </ion-buttons>
+    <ion-button (click)="exit()" style="color: #e54925" fill="clear" slot="end">
+      EXIT
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="background" padding [fullscreen]="true">
+
+  <div class="square">
+    <img src="{{img1}}">
+    <img src="{{img2}}">
+  </div>
+
+  <ion-row>
+    <label class="user_Name">{{title}}</label>
+  </ion-row>
+
+  <div class="list">
+    <div class="heading"> Upcoming Shows</div>
+    <ion-spinner name="bubbles" *ngIf="upcomingLoading" style="margin: auto; display: block;"></ion-spinner>
+    <ion-slides [options]="slideOpts" *ngIf="!upcomingLoading">
+      <ion-slide *ngFor="let list of upcoming">
+        <ion-card style="background-color: #ffffff;">
+          <img src={{list.featured_image_url}}>
+          <ion-card-content class="cardContent">{{list.title.rendered}}</ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+
+    <div style="margin-top: 2%;">
+      <div class="heading">Recent Shows</div>
+      <ion-spinner name="bubbles" *ngIf="recentLoading" style="margin: auto; display: block;"></ion-spinner>
+      <ion-slides [options]="slideOpts" *ngIf="!recentLoading">
+        <ion-slide *ngFor="let list of recent; let i = index" (click)="playShow(list, i)">
+          <ion-card class="card_properties">
+            <audio id="showAudio" #showPlayer></audio>
+            <div style="display: flex;">
+              <img src={{list.featured_image_url}} style="position: relative;">
+              <img src="{{list.playing ? show_pauseImg : show_playImg}}" style="position: absolute;">
+            </div>
+            <ion-card-content class="cardContent">{{list.title.rendered}}</ion-card-content>
+          </ion-card>
+        </ion-slide>  
+      </ion-slides>
+    </div>
+  </div>
+
+  <div class="playButton">
+    <ion-img src="{{btnImage}}" (click)="playRadio()">
+      <audio #radioPlayer>
+        <source src="{{radioUrl}}">
+      </audio>
+    </ion-img>
+  </div>
+
+  <div class="listenlive">
+    <label>Listen talky Live</label>
+  </div>
+
+</ion-content>
