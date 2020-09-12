@@ -50,21 +50,49 @@ export class HomePage {
   constructor(private network: Network, private http: HTTP, private media: Media) 
   { 
 
-    this.network.onDisconnect().subscribe(() => {
+    document.addEventListener("offline", () => {
       if (this.isRadioPlaying ==true) {
-        this.isRadioPlaying = false;
         this.radio.nativeElement.pause();
+        this.radio.nativeElement.src = null;
+        this.radio.nativeElement.load();
         this.btnImage = '../../assets/play.png';
-        this.stopAnimation();
+        document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
+        this.stopAnimation();  
+        MusicControls.updateIsPlaying(false); 
       }
   
       if (this.isShowPlaying == true ) {
-        this.isShowPlaying = false;
         this.show.nativeElement.pause();
         this.stopAnimation();
       }
       alert("Please Check the Internet Connection");
-    });
+    }, false);
+
+    document.addEventListener("online", () => {
+      if (this.upcomingLoading == true) {
+        this.upcomingShows();
+      }
+
+      if (this.recentLoading == true) {
+        this.recentShows();
+      }
+
+      if (this.isRadioPlaying == true) {
+        this.radio.nativeElement.src = this.radioUrl;
+        this.radio.nativeElement.autobuffer = true;
+        this.radio.nativeElement.load();
+        this.radio.nativeElement.play();
+        this.btnImage = '../../assets/stop.png';
+        document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
+        this.playAnimation();
+        MusicControls.updateIsPlaying(true); 
+
+        if (this.isShowPlaying == true ) {
+          this.show.nativeElement.play();
+          this.playAnimation();
+        }
+      }
+    }, false);
 
     this.live = this.media.create(this.radioUrl);
     this.upcomingShows();
@@ -245,7 +273,6 @@ export class HomePage {
     this.radioClicked = true;
     this.showClicked = false;
     this.title = "Now listening live";
-    this.radio.nativeElement.src = this.radioUrl;
 
     if (this.isShowPlaying == true) {
       this.recent[this.currentShowIndex].playing = false;
@@ -265,12 +292,16 @@ export class HomePage {
       this.isRadioPlaying = false;
       this.radio.nativeElement.pause();
       this.radio.nativeElement.src = null;
+      this.radio.nativeElement.load();
       this.btnImage = '../../assets/play.png';
       document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       this.stopAnimation();  
       MusicControls.updateIsPlaying(false); 
     } else {
       this.isRadioPlaying = true;
+      this.radio.nativeElement.src = this.radioUrl;
+      this.radio.nativeElement.autobuffer = true;
+      this.radio.nativeElement.load();
       this.radio.nativeElement.play();
       this.btnImage = '../../assets/stop.png';
       document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
@@ -294,6 +325,7 @@ export class HomePage {
       this.isRadioPlaying = false;
       this.radio.nativeElement.pause();
       this.radio.nativeElement.src = null;
+      this.radio.nativeElement.load();
       this.btnImage = '../../assets/play.png';
       MusicControls.destroy();
       this.firstTime = true;
