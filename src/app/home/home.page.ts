@@ -50,7 +50,7 @@ export class HomePage {
   constructor(private network: Network, private http: HTTP, private media: Media) 
   { 
 
-    document.addEventListener("offline", () => {
+    this.network.onDisconnect().subscribe(() => {
       if (this.isRadioPlaying ==true) {
         this.radio.nativeElement.pause();
         this.radio.nativeElement.src = null;
@@ -65,9 +65,9 @@ export class HomePage {
         this.stopAnimation();
       }
       alert("Please Check the Internet Connection");
-    }, false);
+    });
 
-    document.addEventListener("online", () => {
+    this.network.onConnect().subscribe(() => {
       if (this.upcomingLoading == true) {
         this.upcomingShows();
       }
@@ -76,7 +76,7 @@ export class HomePage {
         this.recentShows();
       }
 
-      if (this.isRadioPlaying == true) {
+      if (this.isRadioPlaying == true && this.radio.nativeElement.paused == true) {
         this.radio.nativeElement.src = this.radioUrl;
         this.radio.nativeElement.autobuffer = true;
         this.radio.nativeElement.load();
@@ -85,13 +85,13 @@ export class HomePage {
         document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
         this.playAnimation();
         MusicControls.updateIsPlaying(true); 
-
-        if (this.isShowPlaying == true ) {
-          this.show.nativeElement.play();
-          this.playAnimation();
-        }
       }
-    }, false);
+
+      if (this.isShowPlaying == true ) {
+        this.show.nativeElement.play();
+        this.playAnimation();
+      }
+    });
 
     this.live = this.media.create(this.radioUrl);
     this.upcomingShows();
