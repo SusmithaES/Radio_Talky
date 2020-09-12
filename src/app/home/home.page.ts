@@ -3,6 +3,7 @@ import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
+declare var MusicControls: any;
 
 @Component({
   selector: 'app-home',
@@ -28,12 +29,13 @@ export class HomePage {
   img4: any;
   img5: any;
   currentShowIndex = null;
-  title: string = " ";
+  title: string = "Listen Now";
   upcomingLoading: boolean = true;
   recentLoading: boolean = true;
   showTimeout: any = null;
   showDuration: any = 0;
   live: MediaObject = this.media.create(this.radioUrl);
+  firstTime: boolean = true;
 
   @ViewChild('radioPlayer') radio: any;
   @ViewChild('showPlayer') show: any;
@@ -46,10 +48,11 @@ export class HomePage {
 
   constructor(private network: Network, private http: HTTP, private media: Media) 
   { 
-    this.network.onConnect().subscribe(() => {
-      this.upcomingShows();
-      this.recentShows();
-    });
+    
+    // this.network.onConnect().subscribe(() => {
+    //   this.upcomingShows();
+    //   this.recentShows();
+    // });
 
     this.network.onDisconnect().subscribe(() => {
       if (this.isRadioPlaying ==true) {
@@ -66,10 +69,90 @@ export class HomePage {
         this.stopAnimation();
       }
       alert("Please Check the Internet Connection");
+      this.internet();
+
     });
 
     this.upcomingShows();
     this.recentShows();
+    
+    
+  }
+
+  internet()
+  {
+        
+    this.network.onConnect().subscribe(() => {
+      this.upcomingShows();
+      this.recentShows();
+    });
+
+  }
+
+  music()
+  {
+    //music controls on notification bar
+    MusicControls.create(
+      {
+        track: this.title,
+        cover: 'assets/logo.png',
+
+        hasPrev   : false,
+        hasNext   : false,	
+        hasClose  : false,
+
+      }
+    )
+    
+    MusicControls.listen();
+
+    // Register callback
+    MusicControls.subscribe((action) => {
+      const message = JSON.parse(action).message;
+      switch(message) {
+        case 'music-controls-pause':
+          this.isRadioPlaying = false
+          this.playRadio();
+          break;
+        case 'music-controls-play':
+          this.isRadioPlaying = true
+          this.playRadio();
+          break;
+        case 'music-controls-destroy':
+          // this.exit();
+          break;
+    
+        // External controls (iOS only)
+          case 'music-controls-toggle-play-pause' :
+            // MusicControls.updateIsPlaying(true); 
+            // MusicControls.updateDismissable(false);
+          break;
+          case 'music-controls-seek-to':
+          const seekToInSeconds = JSON.parse(action).position;
+          MusicControls.updateElapsed({
+            elapsed: seekToInSeconds,
+            isPlaying: true
+          });
+          // Do something
+          break;
+
+        // Headset events (Android only)
+        // All media button events are listed below
+        case 'music-controls-media-button' :
+          // Do something
+          break;
+        case 'music-controls-headset-unplugged':
+          // Do something
+          break;
+        case 'music-controls-headset-plugged':
+          // Do something
+          break;
+
+        default:
+          break;
+      }
+    });
+
   }
 
   upcomingShows()
@@ -170,6 +253,11 @@ export class HomePage {
       return;
     }
 
+    if (this.firstTime == true) {
+      this.music();
+    }
+    this.firstTime = false;
+
     this.title = "Now listening live";
 
     if (this.isShowPlaying == true) {
@@ -186,14 +274,19 @@ export class HomePage {
       this.isRadioPlaying = false;
       //this.radio.nativeElement.pause();
       this.live.stop();
+      this.live.release();
       this.btnImage = '../../assets/play.png';
-      this.stopAnimation();    
+      this.stopAnimation();  
+      MusicControls.updateIsPlaying(true); 
+      MusicControls.updateDismissable(true); 
     } else {
       this.isRadioPlaying = true;
       //this.radio.nativeElement.play();
       this.live.play();
-      this.btnImage = '../../assets/pause.png';
+      this.btnImage = '../../assets/stop.png';
       this.playAnimation();
+      MusicControls.updateIsPlaying(false); 
+      MusicControls.updateDismissable(true);
     }
   }
 
@@ -210,6 +303,7 @@ export class HomePage {
       this.isRadioPlaying = false;
       //this.radio.nativeElement.pause();
       this.live.stop();
+      this.live.release();
       this.btnImage = '../../assets/play.png';
     }
 

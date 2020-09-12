@@ -14,7 +14,6 @@ import { Network } from '@ionic-native/network/ngx';
 import { RemoteServiceService } from './remote-service.service'
 import { HTTP } from '@ionic-native/http/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
