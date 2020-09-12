@@ -97,6 +97,9 @@ export class HomePage {
         track: this.title,
         cover: 'assets/logo.png',
 
+        isPlaying   : false,					
+	      dismissable : false,
+
         hasPrev   : false,
         hasNext   : false,	
         hasClose  : false,
@@ -111,11 +114,9 @@ export class HomePage {
       const message = JSON.parse(action).message;
       switch(message) {
         case 'music-controls-pause':
-          this.isRadioPlaying = false
           this.playRadio();
           break;
         case 'music-controls-play':
-          this.isRadioPlaying = true
           this.playRadio();
           break;
         case 'music-controls-destroy':
@@ -277,16 +278,14 @@ export class HomePage {
       this.live.release();
       this.btnImage = '../../assets/play.png';
       this.stopAnimation();  
-      MusicControls.updateIsPlaying(true); 
-      MusicControls.updateDismissable(true); 
+      MusicControls.updateIsPlaying(false); 
     } else {
       this.isRadioPlaying = true;
       //this.radio.nativeElement.play();
       this.live.play();
       this.btnImage = '../../assets/stop.png';
       this.playAnimation();
-      MusicControls.updateIsPlaying(false); 
-      MusicControls.updateDismissable(true);
+      MusicControls.updateIsPlaying(true); 
     }
   }
 
