@@ -54,7 +54,6 @@ export class HomePage {
       if (this.isRadioPlaying ==true) {
         this.radio.nativeElement.pause();
         this.radio.nativeElement.src = null;
-        this.radio.nativeElement.load();
         this.btnImage = '../../assets/play.png';
         document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
         this.stopAnimation();  
@@ -292,7 +291,6 @@ export class HomePage {
       this.isRadioPlaying = false;
       this.radio.nativeElement.pause();
       this.radio.nativeElement.src = null;
-      this.radio.nativeElement.load();
       this.btnImage = '../../assets/play.png';
       document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       this.stopAnimation();  
@@ -325,7 +323,6 @@ export class HomePage {
       this.isRadioPlaying = false;
       this.radio.nativeElement.pause();
       this.radio.nativeElement.src = null;
-      this.radio.nativeElement.load();
       this.btnImage = '../../assets/play.png';
       MusicControls.destroy();
       this.firstTime = true;
