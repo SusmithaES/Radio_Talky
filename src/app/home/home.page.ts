@@ -34,8 +34,10 @@ export class HomePage {
   recentLoading: boolean = true;
   showTimeout: any = null;
   showDuration: any = 0;
-  live: MediaObject = this.media.create(this.radioUrl);
+  live: MediaObject;
   firstTime: boolean = true;
+  radioClicked: boolean = false;
+  showClicked: boolean = false;
 
   @ViewChild('radioPlayer') radio: any;
   @ViewChild('showPlayer') show: any;
@@ -74,10 +76,9 @@ export class HomePage {
 
     });
 
+    this.live = this.media.create(this.radioUrl);
     this.upcomingShows();
     this.recentShows();
-
-    
   }
 
   internet()
@@ -115,10 +116,18 @@ export class HomePage {
       const message = JSON.parse(action).message;
       switch(message) {
         case 'music-controls-pause':
-          this.playRadio();
+          if (this.radioClicked == true) {
+            this.playRadio();
+          } else if (this.showClicked == true) {
+            this.playShow(this.recent[this.currentShowIndex], this.currentShowIndex);
+          }
           break;
         case 'music-controls-play':
-          this.playRadio();
+          if (this.radioClicked == true) {
+            this.playRadio();
+          } else if (this.showClicked == true) {
+            this.playShow(this.recent[this.currentShowIndex], this.currentShowIndex);
+          }
           break;
         case 'music-controls-destroy':
           // this.exit();
@@ -253,11 +262,8 @@ export class HomePage {
       return;
     }
 
-    if (this.firstTime == true) {
-      this.music();
-    }
-    this.firstTime = false;
-
+    this.radioClicked = true;
+    this.showClicked = false;
     this.title = "Now listening live";
 
     if (this.isShowPlaying == true) {
@@ -266,8 +272,15 @@ export class HomePage {
       this.show.nativeElement.pause();
       if (this.showTimeout != null) {
         clearTimeout(this.showTimeout);
-      }      
+      }    
+      MusicControls.destroy(); 
+      this.firstTime = true; 
     }
+
+    if (this.firstTime == true) {
+      this.music();
+    }
+    this.firstTime = false;
 
     if (this.isRadioPlaying ==true) {
       this.title = "Listen Now";
@@ -297,6 +310,8 @@ export class HomePage {
       return;
     }
 
+    this.radioClicked = false;
+    this.showClicked = true;
     this.title = 'Now Playing' + '   ' + data.title.rendered;
 
     if (this.isRadioPlaying == true) {
@@ -305,7 +320,14 @@ export class HomePage {
       this.live.stop();
       this.live.release();
       this.btnImage = '../../assets/play.png';
+      MusicControls.destroy();
+      this.firstTime = true;
     }
+
+    if (this.firstTime == true) {
+      this.music();
+    }
+    this.firstTime = false;
 
     if (this.currentShowIndex != index) {
       if (this.currentShowIndex != null) {
@@ -326,15 +348,13 @@ export class HomePage {
       this.isShowPlaying = false;
       this.show.nativeElement.pause();
       this.stopAnimation();
+      MusicControls.updateIsPlaying(false); 
     } else {
       this.recent[index].playing = true;
       this.isShowPlaying = true;
       this.show.nativeElement.play();
       this.playAnimation();
-      // this.showTimeout = setTimeout(() => {
-      //   this.isShowPlaying = false;
-      //   this.stopAnimation();
-      // }, (this.show.nativeElement.duration + 1) * 1000);
+      MusicControls.updateIsPlaying(true); 
     }
   }
 
