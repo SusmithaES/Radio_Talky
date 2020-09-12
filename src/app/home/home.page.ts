@@ -3,6 +3,8 @@ import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
 import { Media, MediaObject } from '@ionic-native/media/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+
 declare var MusicControls: any;
 
 @Component({
@@ -47,8 +49,10 @@ export class HomePage {
   show_pauseImg: any = '../../assets/pausemark_white2.png';
   animation = createAnimation();
 
-  constructor(private network: Network, private http: HTTP, private media: Media) 
+  constructor(private network: Network, private http: HTTP, private media: Media, private backgroundMode: BackgroundMode) 
   { 
+
+    this.backgroundMode.enable();
 
     this.network.onDisconnect().subscribe(() => {
       if (this.isRadioPlaying ==true) {
@@ -107,7 +111,7 @@ export class HomePage {
         cover: 'assets/logo.png',
 
         isPlaying   : false,					
-	      dismissable : false,
+	      dismissable : true,
 
         hasPrev   : false,
         hasNext   : false,	
