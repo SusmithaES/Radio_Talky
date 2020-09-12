@@ -1,4 +1,4 @@
-.user_Name {
+.title_Name {
   color: lighten($color:  #000000, $amount: 10);
   font-size: small;
   font-weight: bold;
@@ -68,7 +68,21 @@
 }
 
 @media only screen and (max-width: 599px) {
-  .user_Name {
+  .title_Name {
+    margin: 17% auto auto;
+  }
+
+  .list {
+    margin: 23% 0 5%;
+  }
+}
+
+@media only screen and (max-width: 360px) {
+  .title_Name {
     margin: 8% auto auto;
+  }
+
+  .list {
+    margin: 14% 0 5%;
   }
 }
