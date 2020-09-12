@@ -277,6 +277,7 @@ export class HomePage {
       this.live.stop();
       this.live.release();
       this.btnImage = '../../assets/play.png';
+      document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       this.stopAnimation();  
       MusicControls.updateIsPlaying(false); 
     } else {
@@ -284,6 +285,7 @@ export class HomePage {
       //this.radio.nativeElement.play();
       this.live.play();
       this.btnImage = '../../assets/stop.png';
+      document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
