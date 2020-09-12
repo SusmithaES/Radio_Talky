@@ -45,6 +45,7 @@ export class HomePage {
   btnImage: any = '../../assets/play.png';
   show_playImg: any = '../../assets/Playmark_white2.png';
   show_pauseImg: any = '../../assets/pausemark_white2.png';
+  animation = createAnimation();
 
   constructor(private network: Network, private http: HTTP, private media: Media) 
   { 
@@ -75,7 +76,7 @@ export class HomePage {
 
     this.upcomingShows();
     this.recentShows();
-    
+
     
   }
 
@@ -229,22 +230,20 @@ export class HomePage {
     this.img4 = '../../assets/wave04.png';
     this.img5 = '../../assets/wave05.png';
 
-    const animation = createAnimation()
-    .addElement(document.querySelector('.square'))
+
+    this.animation.addElement(document.querySelector('.square'))
     .duration(1500)
     .direction('alternate')
     .iterations(Infinity)
     .fromTo('transform', 'translateX(0%)', 'translateX(10%)')
     .fromTo('opacity', '1', '0.2');
     
-    animation.play(); 
+    this.animation.play(); 
   } 
 
   stopAnimation () 
   {
-    const animation = stop()
-    this.img1 = null;
-    this.img2 = null;
+    this.animation.stop();
   }
 
   playRadio () 
