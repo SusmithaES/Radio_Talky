@@ -25,14 +25,14 @@
     <ion-spinner name="bubbles" *ngIf="upcomingLoading" style="margin: auto; display: block;"></ion-spinner>
     <ion-slides [options]="slideOpts" *ngIf="!upcomingLoading">
       <ion-slide *ngFor="let list of upcoming">
-        <ion-card style="background-color: #ffffff;">
-          <img src={{list.featured_image_url}}>
+        <ion-card class="card_properties">
+          <img class="sliderImg" src={{list.featured_image_url}}>
           <ion-card-content class="cardContent">{{list.title.rendered}}</ion-card-content>
         </ion-card>
       </ion-slide>
     </ion-slides>
 
-    <div style="margin-top: 2%;">
+    <div style="margin-top: 5%;">
       <div class="heading">Recent Shows</div>
       <ion-spinner name="bubbles" *ngIf="recentLoading" style="margin: auto; display: block;"></ion-spinner>
       <ion-slides [options]="slideOpts" *ngIf="!recentLoading">
@@ -40,8 +40,8 @@
           <ion-card class="card_properties">
             <audio id="showAudio" #showPlayer></audio>
             <div style="display: flex;">
-              <img src={{list.featured_image_url}} style="position: relative;">
-              <img src="{{list.playing ? show_pauseImg : show_playImg}}" style="position: absolute;">
+              <img class="sliderImg" src={{list.featured_image_url}} style="position: relative;">
+              <img class="sliderImg2" src="{{list.playing ? show_pauseImg : show_playImg}}" style="position: absolute;">
             </div>
             <ion-card-content class="cardContent">{{list.title.rendered}}</ion-card-content>
           </ion-card>

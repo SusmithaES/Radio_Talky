@@ -1,8 +1,8 @@
 .title_Name {
   color: lighten($color:  #000000, $amount: 10);
-  font-size: small;
+  font-size: large;
   font-weight: bold;
-  margin: 14% auto auto;
+  margin: 12% auto auto;
 }
 
 .playButton {
@@ -15,7 +15,7 @@
 }
 
 .list {
-  margin: 12% 0 5%;
+  margin: 8% 0 5%;
   color: lighten($color:  #000000, $amount: 10);
 }
 
@@ -52,6 +52,7 @@
   height: 100%;
   display: block;
   background-color: #ffffff;
+  margin: 1px 5px;
 }
 
 .listenlive
@@ -67,6 +68,16 @@
   font-size: small;;
 }
 
+.sliderImg {
+  width: 50vh;
+  height: 15vh;
+}
+
+.sliderImg2 {
+  width: 50vh;
+  height: 20vh;
+}
+
 @media only screen and (max-width: 599px) {
   .title_Name {
     margin: 17% auto auto;
@@ -74,6 +85,10 @@
 
   .list {
     margin: 23% 0 5%;
+  }
+
+  .sliderImg {
+    height: 11vh;
   }
 }
 
