@@ -2,7 +2,6 @@ import { Component, ViewChild} from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { Media, MediaObject } from '@ionic-native/media/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 
 declare var MusicControls: any;
@@ -34,7 +33,7 @@ export class HomePage {
   title: string = "Listen Now";
   upcomingLoading: boolean = true;
   recentLoading: boolean = true;
-  live: MediaObject;
+  //live: MediaObject;
   firstTime: boolean = true;
   radioClicked: boolean = false;
   showClicked: boolean = false;
@@ -49,10 +48,8 @@ export class HomePage {
   show_pauseImg: any = '../../assets/pausemark_white2.png';
   animation = createAnimation();
 
-  constructor(private network: Network, private http: HTTP, private media: Media, private backgroundMode: BackgroundMode) 
+  constructor(private network: Network, private http: HTTP, private backgroundMode: BackgroundMode) 
   { 
-
-    this.backgroundMode.enable();
 
     this.network.onDisconnect().subscribe(() => {
       if (this.isRadioPlaying ==true) {
@@ -97,7 +94,6 @@ export class HomePage {
       }
     });
 
-    this.live = this.media.create(this.radioUrl);
     this.upcomingShows();
     this.recentShows();
   }
@@ -268,6 +264,7 @@ export class HomePage {
 
   playRadio () 
   {
+    this.backgroundMode.on("activate").subscribe(()=>{
     if (!navigator.onLine) {
       alert("Please Check the Internet Connection");
       return;
@@ -310,6 +307,7 @@ export class HomePage {
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
+  });
   }
 
   playShow(data: any, index: any) 

@@ -7,6 +7,7 @@ import { MenuController } from '@ionic/angular';
 import { AndroidFullScreen } from '@ionic-native/android-full-screen/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +23,8 @@ export class AppComponent {
     private menu: MenuController,
     private androidFullScreen: AndroidFullScreen,
     private network: Network,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private backgroundMode: BackgroundMode
   ) {
     this.initializeApp();
   }
@@ -32,7 +34,8 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
       this.androidFullScreen.immersiveMode();
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT) 
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      this.backgroundMode.enable(); 
     });
   }
 
