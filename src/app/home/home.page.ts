@@ -291,7 +291,8 @@ export class HomePage {
     }
     this.firstTime = false;
 
-    if (this.isRadioPlaying ==true) {
+    if (this.isRadioPlaying == true) {
+      this.isRadioPlaying = false;
       this.radio.nativeElement.pause();
     } else {
       this.isRadioPlaying = true;
@@ -300,7 +301,6 @@ export class HomePage {
       this.radio.nativeElement.onpause = () => {
         this.radio.nativeElement.src = null;
         this.radio.nativeElement.load();
-        this.isRadioPlaying = false;
         this.btnImage = '../../assets/play.png';
         document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
         this.stopAnimation();  
@@ -370,20 +370,18 @@ export class HomePage {
     this.firstTime = false;
 
     if (this.isShowPlaying == true ) {
+      this.isShowPlaying = false;
       this.show.nativeElement.pause();
     } else {
       this.recent[index].playing = true;
       this.isShowPlaying = true;
       this.show.nativeElement.onended = () => {
-        this.title = "Listen Now";
         this.recent[this.currentShowIndex].playing = false;
-        this.isShowPlaying = false;
         this.stopAnimation();
         MusicControls.updateIsPlaying(false); 
       }
       this.show.nativeElement.onpause = () => {
         this.recent[this.currentShowIndex].playing = false;
-        this.isShowPlaying = false;
         this.stopAnimation();
         if (this.showClicked == true) {
           MusicControls.updateIsPlaying(false); 
@@ -391,7 +389,6 @@ export class HomePage {
       }
       this.show.nativeElement.onplaying = () => {
         this.recent[this.currentShowIndex].playing = true;
-        this.isShowPlaying = true;
         this.playAnimation();
         if (this.showClicked == true) {
           MusicControls.updateIsPlaying(true); 
