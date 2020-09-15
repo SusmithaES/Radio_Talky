@@ -187,22 +187,11 @@ export class HomePage {
      { Authorization: 'Basic M2hXWEI3MGVKdHV2OkgxdVI1cXpDZlcwS3RUMU9pbGt0YjhjUA==' } 
     )
     .then(response => {
-       try {
-         response.data = JSON.parse(response.data);
-         var responseMsg = JSON.parse(JSON.stringify(response.data));
-         this.upcoming = response["data"]
-         this.upcomingLoading = false
-       } catch(e) {
-         console.error('JSON parsing error');
-         this.presentToast();
-       }
+      this.upcoming = JSON.parse(response.data);
+      this.upcomingLoading = false
     })
     .catch(response => {
-      // prints 403
-      console.log(response.status);
- 
-      // prints Permission denied
-      console.log(response.error);
+      console.log(response);
       this.presentToast();
     });
   }
@@ -220,23 +209,11 @@ export class HomePage {
       { Authorization: 'Basic M2hXWEI3MGVKdHV2OkgxdVI1cXpDZlcwS3RUMU9pbGt0YjhjUA==' } 
      )
      .then(response => {
-        try {
-          response.data = JSON.parse(response.data);
-          // prints test
-          var responseMsg = JSON.parse(JSON.stringify(response.data));
-          this.recent = response["data"]
-          this.recentLoading = false;
-        } catch(e) {
-          console.error('Server error');
-          this.presentToast();
-        }
+        this.recent = JSON.parse(response.data);
+        this.recentLoading = false;
       })
       .catch(response => {
-        // prints 403
-        console.log(response.status);
-
-        // prints Permission denied
-        console.log(response.error);
+        console.log(response);
         this.presentToast();
       }
     );
