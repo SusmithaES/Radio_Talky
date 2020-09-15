@@ -286,10 +286,15 @@ export class HomePage {
       this.firstTime = true; 
     }
 
+    if (this.isRadioPlaying == false && this.firstTime == false) {
+      MusicControls.destroy(); 
+      this.firstTime = true;
+    }
+
     if (this.firstTime == true) {
       this.music();
+      this.firstTime = false;
     }
-    this.firstTime = false;
 
     if (this.isRadioPlaying == true) {
       this.isRadioPlaying = false;
@@ -316,15 +321,6 @@ export class HomePage {
       MusicControls.updateIsPlaying(true); 
     }
     this.badge.clear();
-  }
-
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: (this.recentLoading || this.upcomingLoading) ? 'Something went wrong.' : 'Show Unavailable.',
-      position: 'top',
-      duration: 2000
-    });
-    toast.present();
   }
 
   playShow(data: any, index: any) 
@@ -362,14 +358,19 @@ export class HomePage {
       this.radio.nativeElement.load();
       this.isShowPlaying = false;
       this.firstTime = true;
+    } 
+    
+    if (this.isShowPlaying == false && this.firstTime == false) {
+      MusicControls.destroy();
+      this.firstTime = true;
     }
 
     if (this.firstTime == true) {
       this.music();
+      this.firstTime = false;
     }
-    this.firstTime = false;
 
-    if (this.isShowPlaying == true ) {
+    if (this.isShowPlaying == true) {
       this.isShowPlaying = false;
       this.show.nativeElement.pause();
     } else {
@@ -399,6 +400,15 @@ export class HomePage {
       MusicControls.updateIsPlaying(true); 
     }
     this.badge.clear();
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: (this.recentLoading || this.upcomingLoading) ? 'Something went wrong.' : 'Show Unavailable.',
+      position: 'top',
+      duration: 2000
+    });
+    toast.present();
   }
 
   exit()
