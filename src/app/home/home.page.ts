@@ -3,6 +3,7 @@ import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
 import { LoadingController } from '@ionic/angular';
+import { Badge } from '@ionic-native/badge/ngx';
 
 declare var MusicControls: any;
 
@@ -47,7 +48,8 @@ export class HomePage {
   show_pauseImg: any = '../../assets/pausemark_white2.png';
   animation = createAnimation();
 
-  constructor(private network: Network, private http: HTTP, public loadingController: LoadingController) 
+  constructor(private network: Network, private http: HTTP, public loadingController: LoadingController,
+              private badge: Badge) 
   { 
 
     this.network.onDisconnect().subscribe(() => {
@@ -95,6 +97,7 @@ export class HomePage {
 
     this.upcomingShows();
     this.recentShows();
+    this.badge.clear();
   }
 
   music()
@@ -169,7 +172,7 @@ export class HomePage {
           break;
       }
     });
-
+    this.badge.clear();
   }
 
   upcomingShows()
@@ -292,7 +295,8 @@ export class HomePage {
       this.radio.nativeElement.src = this.radioUrl;
       this.radio.nativeElement.autobuffer = true;
       this.radio.nativeElement.onpause = () => {
-        this.title = "Listen Now";
+        this.radio.nativeElement.src = null;
+        this.radio.nativeElement.load();
         this.isRadioPlaying = false;
         this.btnImage = '../../assets/play.png';
         document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
@@ -308,6 +312,7 @@ export class HomePage {
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
+    this.badge.clear();
   }
 
   playShow(data: any, index: any) 
@@ -361,7 +366,6 @@ export class HomePage {
         MusicControls.updateIsPlaying(false); 
       }
       this.show.nativeElement.onpause = () => {
-        this.title = "Listen Now";
         this.recent[this.currentShowIndex].playing = false;
         this.isShowPlaying = false;
         this.stopAnimation();
@@ -369,10 +373,19 @@ export class HomePage {
           MusicControls.updateIsPlaying(false); 
         }
       }
+      this.show.nativeElement.onplaying = () => {
+        this.recent[this.currentShowIndex].playing = true;
+        this.isShowPlaying = true;
+        this.playAnimation();
+        if (this.showClicked == true) {
+          MusicControls.updateIsPlaying(true); 
+        }
+      }
       this.show.nativeElement.play();
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
+    this.badge.clear();
   }
 
   async presentLoading() {

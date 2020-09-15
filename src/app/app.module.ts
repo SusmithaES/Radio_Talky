@@ -14,6 +14,7 @@ import { RemoteServiceService } from './remote-service.service'
 import { HTTP } from '@ionic-native/http/ngx';
 import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { Badge } from '@ionic-native/badge/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,6 +30,7 @@ import { BackgroundMode } from '@ionic-native/background-mode/ngx';
     ScreenOrientation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BackgroundMode,
+    Badge
   ],
   bootstrap: [AppComponent]
 })
