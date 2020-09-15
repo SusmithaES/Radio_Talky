@@ -297,7 +297,9 @@ export class HomePage {
         this.btnImage = '../../assets/play.png';
         document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
         this.stopAnimation();  
-        MusicControls.updateIsPlaying(false); 
+        if (this.radioClicked == true) {
+          MusicControls.updateIsPlaying(false); 
+        }
       }
       this.radio.nativeElement.load();
       this.radio.nativeElement.play();
@@ -362,8 +364,10 @@ export class HomePage {
         this.title = "Listen Now";
         this.recent[this.currentShowIndex].playing = false;
         this.isShowPlaying = false;
-        MusicControls.updateIsPlaying(false); 
         this.stopAnimation();
+        if (this.showClicked == true) {
+          MusicControls.updateIsPlaying(false); 
+        }
       }
       this.show.nativeElement.play();
       this.playAnimation();
