@@ -88,7 +88,7 @@ export class HomePage {
         MusicControls.updateIsPlaying(true); 
       }
 
-      if (this.isShowPlaying == true ) {
+      if (this.isShowPlaying == true && this.show.nativeElement.ended == false && this.show.nativeElement.paused == true) {
         this.show.nativeElement.play();
         this.playAnimation();
       }
@@ -320,8 +320,8 @@ export class HomePage {
 
   async presentToast() {
     const toast = await this.toastController.create({
-      message: (this.recentLoading || this.upcomingLoading) ? 'Something went wrong.' : 'Show unavailable.',
-      position: 'middle',
+      message: (this.recentLoading || this.upcomingLoading) ? 'Something went wrong.' : 'Show Unavailable.',
+      position: 'top',
       duration: 2000
     });
     toast.present();
