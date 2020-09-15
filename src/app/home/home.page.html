@@ -22,7 +22,7 @@
 
   <div class="list">
     <div class="heading"> Upcoming Shows</div>
-    <ion-spinner name="bubbles" *ngIf="upcomingLoading" style="margin: auto; display: block;"></ion-spinner>
+    <ion-spinner name="crescent" *ngIf="upcomingLoading" style="margin: auto; display: block;"></ion-spinner>
     <ion-slides [options]="slideOpts" *ngIf="!upcomingLoading">
       <ion-slide *ngFor="let list of upcoming">
         <ion-card class="card_properties">
@@ -34,7 +34,7 @@
 
     <div style="margin-top: 5%;">
       <div class="heading">Recent Shows</div>
-      <ion-spinner name="bubbles" *ngIf="recentLoading" style="margin: auto; display: block;"></ion-spinner>
+      <ion-spinner name="crescent" *ngIf="recentLoading" style="margin: auto; display: block;"></ion-spinner>
       <ion-slides [options]="slideOpts" *ngIf="!recentLoading">
         <ion-slide *ngFor="let list of recent; let i = index" (click)="playShow(list, i)">
           <ion-card class="card_properties">

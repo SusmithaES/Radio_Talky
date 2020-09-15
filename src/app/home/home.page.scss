@@ -92,6 +92,12 @@
   }
 }
 
+@media only screen and (max-width: 412px) {
+  .title_Name {
+    margin: 14% auto auto;
+  }
+}
+
 @media only screen and (max-width: 360px) {
   .title_Name {
     margin: 8% auto auto;
