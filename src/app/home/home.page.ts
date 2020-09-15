@@ -2,6 +2,7 @@ import { Component, ViewChild} from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
+import { LoadingController } from '@ionic/angular';
 
 declare var MusicControls: any;
 
@@ -46,7 +47,7 @@ export class HomePage {
   show_pauseImg: any = '../../assets/pausemark_white2.png';
   animation = createAnimation();
 
-  constructor(private network: Network, private http: HTTP) 
+  constructor(private network: Network, private http: HTTP, public loadingController: LoadingController) 
   { 
 
     this.network.onDisconnect().subscribe(() => {
@@ -222,7 +223,7 @@ export class HomePage {
           this.recent = response["data"]
           this.recentLoading = false;
         } catch(e) {
-          console.error('JSON parsing error');
+          console.error('Server error');
         }
       })
       .catch(response => {
@@ -285,18 +286,19 @@ export class HomePage {
     this.firstTime = false;
 
     if (this.isRadioPlaying ==true) {
-      this.title = "Listen Now";
-      this.isRadioPlaying = false;
       this.radio.nativeElement.pause();
-      this.radio.nativeElement.src = null;
-      this.btnImage = '../../assets/play.png';
-      document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
-      this.stopAnimation();  
-      MusicControls.updateIsPlaying(false); 
     } else {
       this.isRadioPlaying = true;
       this.radio.nativeElement.src = this.radioUrl;
       this.radio.nativeElement.autobuffer = true;
+      this.radio.nativeElement.onpause = () => {
+        this.title = "Listen Now";
+        this.isRadioPlaying = false;
+        this.btnImage = '../../assets/play.png';
+        document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
+        this.stopAnimation();  
+        MusicControls.updateIsPlaying(false); 
+      }
       this.radio.nativeElement.load();
       this.radio.nativeElement.play();
       this.btnImage = '../../assets/stop.png';
@@ -319,10 +321,23 @@ export class HomePage {
 
     if (this.isRadioPlaying == true) {
       this.isRadioPlaying = false;
-      this.radio.nativeElement.pause();
-      this.radio.nativeElement.src = null;
       this.btnImage = '../../assets/play.png';
+      document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       MusicControls.destroy();
+      this.radio.nativeElement.pause();
+      this.firstTime = true;
+    }
+
+    if (this.currentShowIndex != index) {
+      if (this.currentShowIndex != null) {
+        this.recent[this.currentShowIndex].playing = false;
+      }
+      MusicControls.destroy();
+      this.currentShowIndex = index;
+      this.show.nativeElement.pause();
+      this.show.nativeElement.src = data.audio_url;
+      this.radio.nativeElement.load();
+      this.isShowPlaying = false;
       this.firstTime = true;
     }
 
@@ -331,30 +346,41 @@ export class HomePage {
     }
     this.firstTime = false;
 
-    if (this.currentShowIndex != index) {
-      if (this.currentShowIndex != null) {
-        this.recent[this.currentShowIndex].playing = false;
-      }
-      this.currentShowIndex = index;
-      this.show.nativeElement.pause();
-      this.show.nativeElement.src = data.audio_url;
-      this.isShowPlaying = false;
-    }
-
     if (this.isShowPlaying == true ) {
-      this.title = "Listen Now";
-      this.recent[index].playing = false;
-      this.isShowPlaying = false;
       this.show.nativeElement.pause();
-      this.stopAnimation();
-      MusicControls.updateIsPlaying(false); 
     } else {
       this.recent[index].playing = true;
       this.isShowPlaying = true;
+      this.show.nativeElement.onended = () => {
+        this.title = "Listen Now";
+        this.recent[this.currentShowIndex].playing = false;
+        this.isShowPlaying = false;
+        this.stopAnimation();
+        MusicControls.updateIsPlaying(false); 
+      }
+      this.show.nativeElement.onpause = () => {
+        this.title = "Listen Now";
+        this.recent[this.currentShowIndex].playing = false;
+        this.isShowPlaying = false;
+        MusicControls.updateIsPlaying(false); 
+        this.stopAnimation();
+      }
       this.show.nativeElement.play();
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'loadingCSS',
+      duration: 30000,
+      spinner: "lines"
+    });
+    await loading.present();
+
+    const { role, data } = await loading.onDidDismiss();
+    console.log('Loading dismissed!');
   }
 
   exit()
