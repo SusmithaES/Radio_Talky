@@ -2,7 +2,7 @@ import { Component, ViewChild} from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { LoadingController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { Badge } from '@ionic-native/badge/ngx';
 
 declare var MusicControls: any;
@@ -48,8 +48,7 @@ export class HomePage {
   show_pauseImg: any = '../../assets/pausemark_white2.png';
   animation = createAnimation();
 
-  constructor(private network: Network, private http: HTTP, public loadingController: LoadingController,
-              private badge: Badge) 
+  constructor(private network: Network, private http: HTTP, private badge: Badge, private toastController: ToastController) 
   { 
 
     this.network.onDisconnect().subscribe(() => {
@@ -195,6 +194,7 @@ export class HomePage {
          this.upcomingLoading = false
        } catch(e) {
          console.error('JSON parsing error');
+         this.presentToast();
        }
     })
     .catch(response => {
@@ -203,6 +203,7 @@ export class HomePage {
  
       // prints Permission denied
       console.log(response.error);
+      this.presentToast();
     });
   }
 
@@ -227,6 +228,7 @@ export class HomePage {
           this.recentLoading = false;
         } catch(e) {
           console.error('Server error');
+          this.presentToast();
         }
       })
       .catch(response => {
@@ -235,6 +237,7 @@ export class HomePage {
 
         // prints Permission denied
         console.log(response.error);
+        this.presentToast();
       }
     );
   }
@@ -315,10 +318,23 @@ export class HomePage {
     this.badge.clear();
   }
 
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: (this.recentLoading || this.upcomingLoading) ? 'Something went wrong.' : 'Show unavailable.',
+      position: 'middle',
+      duration: 2000
+    });
+    toast.present();
+  }
+
   playShow(data: any, index: any) 
   {
     if (!navigator.onLine) {
       alert("Please Check the Internet Connection");
+      return;
+    }
+    if (data.audio_url == null || data.audio_url == "" || data.audio_url === undefined) {
+      this.presentToast();
       return;
     }
 
@@ -386,18 +402,6 @@ export class HomePage {
       MusicControls.updateIsPlaying(true); 
     }
     this.badge.clear();
-  }
-
-  async presentLoading() {
-    const loading = await this.loadingController.create({
-      cssClass: 'loadingCSS',
-      duration: 30000,
-      spinner: "lines"
-    });
-    await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('Loading dismissed!');
   }
 
   exit()
