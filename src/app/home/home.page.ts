@@ -331,7 +331,7 @@ export class HomePage {
       this.currentShowIndex = index;
       this.show.nativeElement.pause();
       this.show.nativeElement.src = data.audio_url;
-      this.radio.nativeElement.load();
+      this.show.nativeElement.load();
       this.isShowPlaying = false;
       this.firstTime = true;
     } 
