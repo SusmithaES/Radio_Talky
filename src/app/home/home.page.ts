@@ -2,8 +2,7 @@ import { Component, ViewChild} from '@angular/core';
 import { Network } from '@ionic-native/network/ngx';
 import { createAnimation } from '@ionic/core';
 import { HTTP } from '@ionic-native/http/ngx';
-import { ToastController } from '@ionic/angular';
-import { Badge } from '@ionic-native/badge/ngx';
+import { Platform, ToastController } from '@ionic/angular';
 
 declare var MusicControls: any;
 
@@ -48,7 +47,7 @@ export class HomePage {
   show_pauseImg: any = '../../assets/pausemark_white2.png';
   animation = createAnimation();
 
-  constructor(private network: Network, private http: HTTP, private badge: Badge, private toastController: ToastController) 
+  constructor(private network: Network, private http: HTTP, private toastController: ToastController, private platform: Platform) 
   { 
 
     this.network.onDisconnect().subscribe(() => {
@@ -94,9 +93,11 @@ export class HomePage {
       }
     });
 
-    this.upcomingShows();
-    this.recentShows();
-    this.badge.clear();
+    this.platform.ready().then(() => {
+      this.upcomingShows();
+      this.recentShows();
+    });
+
   }
 
   music()
@@ -171,7 +172,6 @@ export class HomePage {
           break;
       }
     });
-    this.badge.clear();
   }
 
   upcomingShows()
@@ -297,7 +297,6 @@ export class HomePage {
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
-    this.badge.clear();
   }
 
   playShow(data: any, index: any) 
@@ -376,7 +375,6 @@ export class HomePage {
       this.playAnimation();
       MusicControls.updateIsPlaying(true); 
     }
-    this.badge.clear();
   }
 
   async presentToast() {
