@@ -99,11 +99,13 @@
 }
 
 @media only screen and (max-width: 360px) {
-  .title_Name {
-    margin: 8% auto auto;
-  }
-
   .list {
     margin: 14% 0 5%;
+  }
+}
+
+@media only screen and (max-width: 360px) and (max-height: 640px) {
+  .title_Name {
+    margin: 8% auto auto;
   }
 }
