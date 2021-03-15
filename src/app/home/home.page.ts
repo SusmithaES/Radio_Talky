@@ -22,7 +22,8 @@ export class HomePage {
 
   upcoming:any[] = []
   recent:any[] = []
-  radioUrl: any = 'https://streamingv2.shoutcast.com/raddiotalky';
+  //radioUrl: any = 'https://streamingv2.shoutcast.com/raddiotalky';
+  radioUrl: any = 'https://fps2.listen2myradio.com:2199/listen.php?ip=109.169.23.17&port=8761&type=s1';
   name: string;
   img1: any;
   img2: any
@@ -242,6 +243,8 @@ export class HomePage {
   stopAnimation () 
   {
     this.animation.stop();
+    this.img1 = null
+    this.img2 = null
   }
 
   playRadio () 
@@ -275,21 +278,18 @@ export class HomePage {
 
     if (this.isRadioPlaying == true) {
       this.isRadioPlaying = false;
+      this.title = "Listen Now";
+      this.btnImage = '../../assets/play.png';
+      document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
+      this.stopAnimation();  
       this.radio.nativeElement.pause();
+      this.radio.nativeElement.src = null;
+      this.radio.nativeElement.load();
+      MusicControls.updateIsPlaying(false); 
     } else {
       this.isRadioPlaying = true;
       this.radio.nativeElement.src = this.radioUrl;
       this.radio.nativeElement.autobuffer = true;
-      this.radio.nativeElement.onpause = () => {
-        this.radio.nativeElement.src = null;
-        this.radio.nativeElement.load();
-        this.btnImage = '../../assets/play.png';
-        document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
-        this.stopAnimation();  
-        if (this.radioClicked == true) {
-          MusicControls.updateIsPlaying(false); 
-        }
-      }
       this.radio.nativeElement.load();
       this.radio.nativeElement.play();
       this.btnImage = '../../assets/stop.png';
@@ -320,6 +320,8 @@ export class HomePage {
       document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       MusicControls.destroy();
       this.radio.nativeElement.pause();
+      this.radio.nativeElement.src = null;
+      this.radio.nativeElement.load();
       this.firstTime = true;
     }
 
