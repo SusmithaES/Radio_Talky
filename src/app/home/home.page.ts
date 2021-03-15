@@ -273,6 +273,9 @@ export class HomePage {
 
     if (this.firstTime == true) {
       this.music();
+      this.radio.nativeElement.src = this.radioUrl;
+      this.radio.nativeElement.autobuffer = true;
+      this.radio.nativeElement.load();
       this.firstTime = false;
     }
 
@@ -283,14 +286,11 @@ export class HomePage {
       document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
       this.stopAnimation();  
       this.radio.nativeElement.pause();
-      this.radio.nativeElement.src = null;
-      this.radio.nativeElement.load();
+      // this.radio.nativeElement.src = null;
+      // this.radio.nativeElement.load();
       MusicControls.updateIsPlaying(false); 
     } else {
       this.isRadioPlaying = true;
-      this.radio.nativeElement.src = this.radioUrl;
-      this.radio.nativeElement.autobuffer = true;
-      this.radio.nativeElement.load();
       this.radio.nativeElement.play();
       this.btnImage = '../../assets/stop.png';
       document.getElementById('buttonImage').setAttribute( 'src', this.btnImage);
