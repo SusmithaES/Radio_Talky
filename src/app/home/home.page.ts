@@ -22,7 +22,8 @@ export class HomePage {
 
   upcoming:any[] = []
   recent:any[] = []
-  radioUrl: any = 'https://streamingv2.shoutcast.com/raddiotalky';
+  //radioUrl: any = 'https://streamingv2.shoutcast.com/raddiotalky';
+  radioUrl: any = 'https://fps2.listen2myradio.com:2199/listen.php?ip=109.169.23.17&port=8761&type=s1';
   name: string;
   img1: any;
   img2: any
